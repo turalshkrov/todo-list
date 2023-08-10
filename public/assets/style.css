@@ -4,9 +4,13 @@
 .modal-backdrop {
   z-index: 1044;
 }
-.filter-item {
+
+.nav-item {
   cursor: pointer;
 }
-.navbar {
-  width: max-content;
+body {
+  font-family: 'Poppins', sans-serif;
+}
+.task-item i {
+  cursor: pointer;
 }
