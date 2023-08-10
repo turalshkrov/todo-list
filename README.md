@@ -1,2 +1,3 @@
-# todo-list
-simple todo list for TOP
+## todo-list
+
+Simple todo list with TypeScript for TOP.
