@@ -10,11 +10,14 @@
 </head>
 <body>
   <div class="d-flex flex-column flex-md-row min-vh-100">
-    <nav class="navbar navbar-expand-md bg-light flex-md-column align-items-center align-items-md-start justify-content-start p-3 p-md-4 p-lg-5">
+    <nav class="navbar navbar-expand-md flex-nowrap bg-light flex-md-column align-items-center align-items-md-start justify-content-start p-3 p-md-4 p-lg-5">
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <h4 class="navbar-brand ms-3 ms-md-0 fw-bold">Todo List App</h4>
+      <div class="d-flex w-100 align-items-center justify-content-between">
+        <h4 class="navbar-brand ms-3 ms-md-0 me-0 fw-bold">Todo List App</h4>
+        <i id="theme-icon" class="bi bi-sun fs-5"></i>
+      </div>
       <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
         <div class="offcanvas-header">
           <h5 class="offcanvas-title fw-bold" id="offcanvasNavbarLabel">Todo List App</h5>
@@ -105,10 +108,10 @@
             <p class="mb-0 me-3 me-lg-5">11/08/23</p>
             <div class="dropdown">
               <i class="bi bi-three-dots" type="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square text-primary me-2"></i>Edit task</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-trash text-danger me-2"></i>Delete task</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-star text-warning me-2"></i>Important</a></li>
+              <ul class="dropdown-menu shadow">
+                <li><button class="dropdown-item" href="#"><i class="bi bi-pencil-square text-primary me-2"></i>Edit task</button></li>
+                <li><button class="dropdown-item" href="#"><i class="bi bi-trash text-danger me-2"></i>Delete task</button></li>
+                <li><button class="dropdown-item" href="#"><i class="bi bi-star text-warning me-2"></i>Important</button></li>
               </ul>
             </div>
           </div>
@@ -123,10 +126,10 @@
             <p class="mb-0 me-3 me-lg-5">10/08/23</p>
             <div class="dropdown">
               <i class="bi bi-three-dots" type="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square text-primary me-2"></i>Edit task</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-trash text-danger me-2"></i>Delete task</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-star-fill text-warning me-2"></i>Important</a></li>
+              <ul class="dropdown-menu shadow">
+                <li><button class="dropdown-item" href="#"><i class="bi bi-pencil-square text-primary me-2"></i>Edit task</button></li>
+                <li><button class="dropdown-item" href="#"><i class="bi bi-trash text-danger me-2"></i>Delete task</button></li>
+                <li><button class="dropdown-item" href="#"><i class="bi bi-star-fill text-warning me-2"></i>Important</button></li>
               </ul> 
             </div>
           </div>

@@ -11,7 +11,7 @@
 body {
   font-family: 'Poppins', sans-serif;
 }
-.task-item i {
+.task-item i, .navbar i {
   cursor: pointer;
 }
 .navbar-nav {
