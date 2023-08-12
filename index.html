@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
   <link rel="stylesheet" href="./public/assets/style.css">
+  <link rel="shortcut icon" href="./public/assets/images/icon.png" type="image/x-icon">
   <title>Todo List</title>
 </head>
 <body>
@@ -45,7 +46,7 @@
             <li class="nav-item d-flex justify-content-between my-2">
               <div class="d-flex">
                 <i class="bi bi-star text-warning"></i>
-                <span class="ms-2">Favorite</span>
+                <span class="ms-2">Important</span>
               </div>
               <span>9</span>
             </li>
@@ -88,21 +89,26 @@
         </div>
       </div>
       <div class="task-container mt-3 mt-lg-4 ps-0 ps-md-3 ps-lg-4 pe-0 pe-md-4 pe-lg-5">
+        <label for="sort" class="form-label">Sorting by</label>
+        <select id="sort" class="ms-2">
+          <option value="sortingByDefault">Default</option>
+          <option value="sortingByDate">Date</option>
+          <option value="sortingByName">Name</option>
+        </select>
         <div class="task-item d-flex align-items-center justify-content-between mt-2 mt-md-3 pe-0 pe-md-3 pe-lg-4">
           <div class="d-flex align-items-center pe-4">
             <i class="bi bi-circle"></i>
             <p class="mb-0 ms-3 pe-2 pe-lg-4" data-bs-toggle="tooltip" data-bs-placement="top"
             data-bs-custom-class="custom-tooltip" data-bs-title="This is detail about task">This is a task</p>
-            <i class="bi bi-star text-warning"></i>
           </div>
           <div class="d-flex">
             <p class="mb-0 me-3 me-lg-5">11/08/23</p>
             <div class="dropdown">
               <i class="bi bi-three-dots" type="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square text-primary me-2"></i> Edit task</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-trash text-danger me-2"></i> Delete task</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-star text-warning me-2"></i>  Favorite</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square text-primary me-2"></i>Edit task</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-trash text-danger me-2"></i>Delete task</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-star text-warning me-2"></i>Important</a></li>
               </ul>
             </div>
           </div>
@@ -118,9 +124,9 @@
             <div class="dropdown">
               <i class="bi bi-three-dots" type="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square text-primary me-2"></i> Edit task</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-trash text-danger me-2"></i> Delete task</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-star text-warning me-2"></i>  Favorite</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square text-primary me-2"></i>Edit task</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-trash text-danger me-2"></i>Delete task</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-star-fill text-warning me-2"></i>Important</a></li>
               </ul> 
             </div>
           </div>
