@@ -1,4 +1,4 @@
-export const Task = class Task {
+export class Task {
   name: string;
   details: string;
   date: Date;
