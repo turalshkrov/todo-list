@@ -65,15 +65,17 @@
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add Task</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
                 <form id="task-form" autocomplete="off">
                   <label for="task-name" class="form-label">Task Name:</label>
                   <input type="text" id="task-name" class="form-control" maxlength="25" required>
-                  <label for="task-details" class="form-label mt-2">Details:</label>
-                  <input type="text" id="task-details" class="form-control" maxlength="40">
+                  <div class="d-flex mt-2 align-items-center">
+                    <label for="task-important" class="form-label mb-0">Important:</label>
+                    <input type="checkbox" class="ms-2" id="task-important">
+                  </div>
                   <div class="mt-3">
                     <label for="task-date" class="form-label">Date:</label>
                     <input type="date" id="task-date" class="control-form ms-2">
@@ -98,8 +100,7 @@
         <div class="task-item d-flex align-items-center justify-content-between mt-2 mt-md-3 pe-0 pe-md-3 pe-lg-4">
           <div class="d-flex align-items-center pe-4">
             <i class="bi bi-circle"></i>
-            <p class="mb-0 ms-3 pe-2 pe-lg-4" data-bs-toggle="tooltip" data-bs-placement="top"
-            data-bs-custom-class="custom-tooltip" data-bs-title="This is detail about task">This is a task</p>
+            <p class="mb-0 ms-3 pe-2 pe-lg-4">This is a task</p>
           </div>
           <div class="d-flex">
             <p class="mb-0 me-3 me-lg-5">11/08/23</p>

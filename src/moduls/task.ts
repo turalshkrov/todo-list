@@ -1,12 +1,10 @@
 export class Task {
   name: string;
-  details: string;
-  date: Date;
+  date: string;
   isImportant: boolean;
 
-  constructor(name: string, details: string, date: Date, isImportant: boolean) {
+  constructor(name: string, date: string, isImportant: boolean) {
     this.name = name;
-    this.details = details;
     this.date = date;
     this.isImportant = isImportant;
   }
