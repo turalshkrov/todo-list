@@ -89,6 +89,34 @@
             </div>
           </div>
         </div>
+        <div class="modal fade" id="taskEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Task</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="edit-form" autocomplete="off">
+                  <label for="edit-name" class="form-label">Task Name:</label>
+                  <input type="text" id="edit-name" class="form-control" maxlength="25" required>
+                  <div class="d-flex mt-2 align-items-center">
+                    <label for="edit-important" class="form-label mb-0">Important:</label>
+                    <input type="checkbox" class="ms-2" id="edit-important">
+                  </div>
+                  <div class="mt-3">
+                    <label for="edit-date" class="form-label">Date:</label>
+                    <input type="date" id="edit-date" class="control-form ms-2">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="edit-form" id="edit-form-submit" class="btn btn-sm btn-primary" data-bs-dismiss="modal" disabled>Save task</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="mt-3 mt-lg-4 ps-0 ps-md-3 ps-lg-4 pe-0 pe-md-4 pe-lg-5" id="task-container">
         <label for="sort" class="form-label">Sorting by</label>
@@ -103,13 +131,13 @@
             <p class="mb-0 ms-3 pe-2 pe-lg-4">This is a task</p>
           </div>
           <div class="d-flex">
-            <p class="mb-0 me-3 me-lg-5">11/08/23</p>
+            <p class="mb-0 me-3 me-lg-5">2023-08-12</p>
             <div class="dropdown">
               <i class="bi bi-three-dots" type="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
               <ul class="dropdown-menu shadow">
-                <li><button class="dropdown-item" href="#"><i class="bi bi-pencil-square text-primary me-2"></i>Edit task</button></li>
-                <li><button class="dropdown-item" href="#"><i class="bi bi-trash text-danger me-2"></i>Delete task</button></li>
-                <li><button class="dropdown-item" href="#"><i class="bi bi-star text-warning me-2"></i>Important</button></li>
+                <li><button class="dropdown-item edit-task"  data-bs-toggle="modal" data-bs-target="#taskEditModal"><i class="bi bi-pencil-square text-primary me-2"></i>Edit task</button></li>
+                <li><button class="dropdown-item"><i class="bi bi-trash text-danger me-2"></i>Delete task</button></li>
+                <li><button class="dropdown-item"><i class="bi bi-star text-warning me-2"></i>Important</button></li>
               </ul>
             </div>
           </div>
@@ -121,13 +149,13 @@
             <i class="bi bi-star-fill text-warning"></i>
           </div>
           <div class="d-flex">
-            <p class="mb-0 me-3 me-lg-5">10/08/23</p>
+            <p class="mb-0 me-3 me-lg-5">2023-08-12</p>
             <div class="dropdown">
               <i class="bi bi-three-dots" type="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
               <ul class="dropdown-menu shadow">
-                <li><button class="dropdown-item" href="#"><i class="bi bi-pencil-square text-primary me-2"></i>Edit task</button></li>
-                <li><button class="dropdown-item" href="#"><i class="bi bi-trash text-danger me-2"></i>Delete task</button></li>
-                <li><button class="dropdown-item" href="#"><i class="bi bi-star-fill text-warning me-2"></i>Important</button></li>
+                <li><button class="dropdown-item edit-task" data-bs-toggle="modal" data-bs-target="#taskEditModal"><i class="bi bi-pencil-square text-primary me-2"></i>Edit task</button></li>
+                <li><button class="dropdown-item"><i class="bi bi-trash text-danger me-2"></i>Delete task</button></li>
+                <li><button class="dropdown-item"><i class="bi bi-star-fill text-warning me-2"></i>Important</button></li>
               </ul> 
             </div>
           </div>
