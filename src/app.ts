@@ -31,7 +31,6 @@ const editSubmitChecker: Function = () => {
 }
 
 const editModalShow: Function = (e: Event) => {
-
   const eventTarget = e.target as HTMLButtonElement;
   const taskDate = eventTarget.parentElement?.parentElement?.parentElement?.parentElement?.firstElementChild?.textContent!;
   const taskName = eventTarget.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.firstElementChild?.children[1].textContent!;
@@ -50,6 +49,9 @@ const addTask: Function = (e: Event) => {
   taskDateInput.value = "";
   taskImportantInput.checked = false;
   submitChecker();
+
+  let editTaskButtons: Element[] = [...document.querySelectorAll('.edit-task')];
+  editTaskButtons.map(button => button.addEventListener('click', e => editModalShow(e)));
 }
 
 const addEventListeners: Function = () => {

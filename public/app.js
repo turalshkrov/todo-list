@@ -42,6 +42,8 @@ const addTask = (e) => {
     taskDateInput.value = "";
     taskImportantInput.checked = false;
     submitChecker();
+    let editTaskButtons = [...document.querySelectorAll('.edit-task')];
+    editTaskButtons.map(button => button.addEventListener('click', e => editModalShow(e)));
 };
 const addEventListeners = () => {
     taskForm.addEventListener('change', () => submitChecker());
