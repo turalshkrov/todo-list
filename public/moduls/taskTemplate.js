@@ -16,6 +16,7 @@ export class TaskTemplate {
         const editButtonLi = document.createElement('li');
         const deleteButtonLi = document.createElement('li');
         const importantButtonLi = document.createElement('li');
+        taskItem.id = task.id;
         taskItem.className = 'task-item d-flex align-items-center justify-content-between mt-2 mt-md-3 pe-0 pe-md-3 pe-lg-4';
         taskTitleDiv.className = 'd-flex align-items-center pe-4';
         taskTitle.className = 'mb-0 ms-3 pe-2 pe-lg-4';
