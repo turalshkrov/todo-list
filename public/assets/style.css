@@ -22,3 +22,7 @@ body {
 .navbar-nav {
   min-width: 200px;
 }
+
+#sort-icon {
+  cursor: pointer;
+}

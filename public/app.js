@@ -12,6 +12,8 @@ const editDateInput = document.getElementById('edit-date');
 const taskFormSubmitButton = document.getElementById('task-form-submit');
 const editFormSubmitButton = document.getElementById('edit-form-submit');
 const deleteSubmitButton = document.getElementById('delete-task-submit');
+const sortInput = document.getElementById('sort');
+const sortOrderButton = document.getElementById('sort-icon');
 let idCounter = 0;
 let taskArray = [];
 const taskTemplate = new TaskTemplate(taskContainer);
@@ -36,6 +38,28 @@ const editSubmitChecker = () => {
     editNameInput.value !== "" && editDateInput.value !== ""
         ? editFormSubmitButton.disabled = false
         : editFormSubmitButton.disabled = true;
+};
+const addTask = (e) => {
+    e.preventDefault();
+    const newTask = new Task(taskNameInput.value, taskDateInput.value, taskImportantInput.checked, false, `t-${idCounter}`);
+    idCounter += 1;
+    taskArray.push(newTask);
+    updateUI();
+    taskNameInput.value = "";
+    taskDateInput.value = "";
+    taskImportantInput.checked = false;
+    submitChecker();
+};
+const saveChanges = (e) => {
+    e.preventDefault();
+    const eventTarget = e.target;
+    const taskId = eventTarget.getAttribute('edit-task-id');
+    const editTask = new Task(editNameInput.value, editDateInput.value, editImportantInput.checked, false, taskId);
+    taskArray.forEach((task, index) => taskArray[index] = task.id === taskId ? editTask : task);
+    updateUI();
+    editNameInput.value = '';
+    editDateInput.value = '';
+    editImportantInput.checked = false;
 };
 const editModalShow = (e) => {
     var _a, _b, _c, _d, _e;
@@ -75,27 +99,25 @@ const makeImportant = (e) => {
     taskArray.forEach((task) => task.isImportant = task.id === taskId ? !task.isImportant : task.isImportant);
     updateUI();
 };
-const addTask = (e) => {
-    e.preventDefault();
-    const newTask = new Task(taskNameInput.value, taskDateInput.value, taskImportantInput.checked, false, `t-${idCounter}`);
-    idCounter += 1;
-    taskArray.push(newTask);
+const sortTaskArray = () => {
+    switch (sortInput.value) {
+        case 'Default':
+            taskArray.sort((a, b) => a.id > b.id ? 1 : -1);
+            break;
+        case 'Name':
+            taskArray.sort((a, b) => a.name > b.name ? 1 : -1);
+            break;
+        case 'Date':
+            taskArray.sort((a, b) => a.date > b.date ? 1 : -1);
+            break;
+    }
     updateUI();
-    taskNameInput.value = "";
-    taskDateInput.value = "";
-    taskImportantInput.checked = false;
-    submitChecker();
 };
-const saveChanges = (e) => {
-    e.preventDefault();
+const sortOrder = (e) => {
     const eventTarget = e.target;
-    const taskId = eventTarget.getAttribute('edit-task-id');
-    const editTask = new Task(editNameInput.value, editDateInput.value, editImportantInput.checked, false, taskId);
-    taskArray.forEach((task, index) => taskArray[index] = task.id === taskId ? editTask : task);
+    eventTarget.className = eventTarget.className === 'bi bi-sort-up fs-5 ms-1' ? 'bi bi-sort-down fs-5 ms-1' : 'bi bi-sort-up fs-5 ms-1';
+    taskArray.reverse();
     updateUI();
-    editNameInput.value = '';
-    editDateInput.value = '';
-    editImportantInput.checked = false;
 };
 const addEventListeners = () => {
     taskForm.addEventListener('change', () => submitChecker());
@@ -103,5 +125,7 @@ const addEventListeners = () => {
     taskForm.addEventListener('submit', e => addTask(e));
     editForm.addEventListener('submit', e => saveChanges(e));
     deleteSubmitButton.addEventListener('click', e => deleteTask(e));
+    sortInput.addEventListener('change', () => sortTaskArray());
+    sortOrderButton.addEventListener('click', e => sortOrder(e));
 };
 addEventListeners();
