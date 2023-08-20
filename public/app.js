@@ -22,9 +22,10 @@ const updateUI = () => {
     editTaskButtons.map(button => button.addEventListener('click', e => editModalShow(e)));
     let deleteTaskButtons = [...document.querySelectorAll('.delete-task')];
     deleteTaskButtons.map(button => button.addEventListener('click', e => deleteModalShow(e)));
-    let finishedTaskButtons = [];
-    [...document.querySelectorAll('.task-item')].forEach(item => { var _a; return finishedTaskButtons.push((_a = item.firstElementChild) === null || _a === void 0 ? void 0 : _a.firstElementChild); });
+    let finishedTaskButtons = [...document.querySelectorAll('.finish-check')];
     finishedTaskButtons.map(button => button.addEventListener('click', e => taskFinished(e)));
+    let makeImportantButtons = [...document.querySelectorAll('.make-important')];
+    makeImportantButtons.map(button => button.addEventListener('click', e => makeImportant(e)));
 };
 const submitChecker = () => {
     taskNameInput.value !== "" && taskDateInput.value !== ""
@@ -65,6 +66,13 @@ const taskFinished = (e) => {
     const eventTarget = e.target;
     const taskId = (_b = (_a = eventTarget.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement) === null || _b === void 0 ? void 0 : _b.id;
     taskArray.forEach((task) => task.finished = task.id === taskId ? !task.finished : task.finished);
+    updateUI();
+};
+const makeImportant = (e) => {
+    var _a, _b, _c, _d, _e;
+    const eventTarget = e.target;
+    const taskId = (_e = (_d = (_c = (_b = (_a = eventTarget.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement) === null || _b === void 0 ? void 0 : _b.parentElement) === null || _c === void 0 ? void 0 : _c.parentElement) === null || _d === void 0 ? void 0 : _d.parentElement) === null || _e === void 0 ? void 0 : _e.id;
+    taskArray.forEach((task) => task.isImportant = task.id === taskId ? !task.isImportant : task.isImportant);
     updateUI();
 };
 const addTask = (e) => {

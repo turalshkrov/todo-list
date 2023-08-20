@@ -28,9 +28,11 @@ const updateUI: Function = () => {
   let deleteTaskButtons: Element[] = [...document.querySelectorAll('.delete-task')];
   deleteTaskButtons.map(button => button.addEventListener('click', e => deleteModalShow(e)));
 
-  let finishedTaskButtons: Element[] = [];
-  [...document.querySelectorAll('.task-item')].forEach(item => finishedTaskButtons.push(item.firstElementChild?.firstElementChild!));
+  let finishedTaskButtons: Element[] = [...document.querySelectorAll('.finish-check')];
   finishedTaskButtons.map(button => button.addEventListener('click', e => taskFinished(e)));
+
+  let makeImportantButtons: Element[] = [...document.querySelectorAll('.make-important')];
+  makeImportantButtons.map(button => button.addEventListener('click', e => makeImportant(e)));
 }
 
 const submitChecker: Function = () => {
@@ -75,6 +77,13 @@ const taskFinished: Function = (e: Event) => {
   const eventTarget = e.target as HTMLButtonElement;
   const taskId = eventTarget.parentElement?.parentElement?.id!;
   taskArray.forEach((task)=> task.finished = task.id === taskId ? !task.finished : task.finished);
+  updateUI();
+}
+
+const makeImportant: Function = (e: Event) => {
+  const eventTarget = e.target as HTMLButtonElement;
+  const taskId = eventTarget.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.id!;
+  taskArray.forEach((task)=> task.isImportant = task.id === taskId ? !task.isImportant : task.isImportant);
   updateUI();
 }
 

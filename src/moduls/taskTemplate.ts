@@ -28,11 +28,11 @@ export class TaskTemplate {
     dropdownMenuUl.className = 'dropdown-menu shadow';
     editButton.className = 'dropdown-item edit-task';
     deleteButton.className = 'dropdown-item delete-task';
-    importantButton.className = 'dropdown-item';
+    importantButton.className = 'dropdown-item make-important';
 
     taskTitle.innerText = task.name;
     taskDate.innerText = task.date;
-    taskTitleDiv.innerHTML += task.finished ? '<i class="bi bi-check-circle-fill text-success"></i>' : '<i class="bi bi-circle"></i>';
+    taskTitleDiv.innerHTML += task.finished ? '<i class="bi bi-check-circle-fill text-success finish-check"></i>' : '<i class="bi bi-circle finish-check"></i>';
     taskTitleDiv.appendChild(taskTitle);
     taskTitleDiv.innerHTML += task.isImportant ? '<i class="bi bi-star-fill text-warning"></i>' : '';
     dropdown.innerHTML += '<i class="bi bi-three-dots" type="button" data-bs-toggle="dropdown" aria-expanded="false"></i>';
