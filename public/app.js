@@ -38,12 +38,12 @@ const editSubmitChecker = () => {
         : editFormSubmitButton.disabled = true;
 };
 const editModalShow = (e) => {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x;
+    var _a, _b, _c, _d, _e;
     const eventTarget = e.target;
-    const taskDate = (_e = (_d = (_c = (_b = (_a = eventTarget.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement) === null || _b === void 0 ? void 0 : _b.parentElement) === null || _c === void 0 ? void 0 : _c.parentElement) === null || _d === void 0 ? void 0 : _d.firstElementChild) === null || _e === void 0 ? void 0 : _e.textContent;
-    const taskName = (_l = (_k = (_j = (_h = (_g = (_f = eventTarget.parentElement) === null || _f === void 0 ? void 0 : _f.parentElement) === null || _g === void 0 ? void 0 : _g.parentElement) === null || _h === void 0 ? void 0 : _h.parentElement) === null || _j === void 0 ? void 0 : _j.parentElement) === null || _k === void 0 ? void 0 : _k.firstElementChild) === null || _l === void 0 ? void 0 : _l.children[1].textContent;
-    const taskImportant = ((_s = (_r = (_q = (_p = (_o = (_m = eventTarget.parentElement) === null || _m === void 0 ? void 0 : _m.parentElement) === null || _o === void 0 ? void 0 : _o.parentElement) === null || _p === void 0 ? void 0 : _p.parentElement) === null || _q === void 0 ? void 0 : _q.parentElement) === null || _r === void 0 ? void 0 : _r.firstElementChild) === null || _s === void 0 ? void 0 : _s.children[2]) === undefined ? false : true;
-    const taskId = (_x = (_w = (_v = (_u = (_t = eventTarget.parentElement) === null || _t === void 0 ? void 0 : _t.parentElement) === null || _u === void 0 ? void 0 : _u.parentElement) === null || _v === void 0 ? void 0 : _v.parentElement) === null || _w === void 0 ? void 0 : _w.parentElement) === null || _x === void 0 ? void 0 : _x.id;
+    const taskId = (_e = (_d = (_c = (_b = (_a = eventTarget.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement) === null || _b === void 0 ? void 0 : _b.parentElement) === null || _c === void 0 ? void 0 : _c.parentElement) === null || _d === void 0 ? void 0 : _d.parentElement) === null || _e === void 0 ? void 0 : _e.id;
+    const taskName = taskArray.filter(task => task.id === taskId)[0].name;
+    const taskDate = taskArray.filter(task => task.id === taskId)[0].date;
+    const taskImportant = taskArray.filter(task => task.id === taskId)[0].isImportant;
     editNameInput.value = taskName;
     editDateInput.value = taskDate;
     editImportantInput.checked = taskImportant;

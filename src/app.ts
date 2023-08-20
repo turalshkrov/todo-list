@@ -49,10 +49,10 @@ const editSubmitChecker: Function = () => {
 
 const editModalShow: Function = (e: Event) => {
   const eventTarget = e.target as HTMLButtonElement;
-  const taskDate = eventTarget.parentElement?.parentElement?.parentElement?.parentElement?.firstElementChild?.textContent!;
-  const taskName = eventTarget.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.firstElementChild?.children[1].textContent!;
-  const taskImportant = eventTarget.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.firstElementChild?.children[2] === undefined ? false : true!;
   const taskId = eventTarget.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.id!;
+  const taskName = taskArray.filter(task => task.id === taskId)[0].name;
+  const taskDate = taskArray.filter(task => task.id === taskId)[0].date;
+  const taskImportant = taskArray.filter(task => task.id === taskId)[0].isImportant;
 
   editNameInput.value = taskName;
   editDateInput.value = taskDate;
