@@ -22,6 +22,9 @@ const updateUI = () => {
     editTaskButtons.map(button => button.addEventListener('click', e => editModalShow(e)));
     let deleteTaskButtons = [...document.querySelectorAll('.delete-task')];
     deleteTaskButtons.map(button => button.addEventListener('click', e => deleteModalShow(e)));
+    let finishedTaskButtons = [];
+    [...document.querySelectorAll('.task-item')].forEach(item => { var _a; return finishedTaskButtons.push((_a = item.firstElementChild) === null || _a === void 0 ? void 0 : _a.firstElementChild); });
+    finishedTaskButtons.map(button => button.addEventListener('click', e => taskFinished(e)));
 };
 const submitChecker = () => {
     taskNameInput.value !== "" && taskDateInput.value !== ""
@@ -57,9 +60,16 @@ const deleteTask = (e) => {
     taskArray = taskArray.filter(task => task.id !== taskId);
     updateUI();
 };
+const taskFinished = (e) => {
+    var _a, _b;
+    const eventTarget = e.target;
+    const taskId = (_b = (_a = eventTarget.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement) === null || _b === void 0 ? void 0 : _b.id;
+    taskArray.forEach((task) => task.finished = task.id === taskId ? !task.finished : task.finished);
+    updateUI();
+};
 const addTask = (e) => {
     e.preventDefault();
-    const newTask = new Task(taskNameInput.value, taskDateInput.value, taskImportantInput.checked, `t-${idCounter}`);
+    const newTask = new Task(taskNameInput.value, taskDateInput.value, taskImportantInput.checked, false, `t-${idCounter}`);
     idCounter += 1;
     taskArray.push(newTask);
     updateUI();
@@ -72,11 +82,9 @@ const saveChanges = (e) => {
     e.preventDefault();
     const eventTarget = e.target;
     const taskId = eventTarget.getAttribute('edit-task-id');
-    const editTask = new Task(editNameInput.value, editDateInput.value, editImportantInput.checked, taskId);
+    const editTask = new Task(editNameInput.value, editDateInput.value, editImportantInput.checked, false, taskId);
     taskArray.forEach((task, index) => taskArray[index] = task.id === taskId ? editTask : task);
     updateUI();
-    let editTaskButtons = [...document.querySelectorAll('.edit-task')];
-    editTaskButtons.map(button => button.addEventListener('click', e => editModalShow(e)));
     editNameInput.value = '';
     editDateInput.value = '';
     editImportantInput.checked = false;

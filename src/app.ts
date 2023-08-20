@@ -27,6 +27,10 @@ const updateUI: Function = () => {
 
   let deleteTaskButtons: Element[] = [...document.querySelectorAll('.delete-task')];
   deleteTaskButtons.map(button => button.addEventListener('click', e => deleteModalShow(e)));
+
+  let finishedTaskButtons: Element[] = [];
+  [...document.querySelectorAll('.task-item')].forEach(item => finishedTaskButtons.push(item.firstElementChild?.firstElementChild!));
+  finishedTaskButtons.map(button => button.addEventListener('click', e => taskFinished(e)));
 }
 
 const submitChecker: Function = () => {
@@ -67,9 +71,16 @@ const deleteTask: Function = (e: Event) => {
   updateUI();
 }
 
+const taskFinished: Function = (e: Event) => {
+  const eventTarget = e.target as HTMLButtonElement;
+  const taskId = eventTarget.parentElement?.parentElement?.id!;
+  taskArray.forEach((task)=> task.finished = task.id === taskId ? !task.finished : task.finished);
+  updateUI();
+}
+
 const addTask: Function = (e: Event) => {
   e.preventDefault();
-  const newTask = new Task(taskNameInput.value, taskDateInput.value, taskImportantInput.checked, `t-${idCounter}`);
+  const newTask = new Task(taskNameInput.value, taskDateInput.value, taskImportantInput.checked, false,  `t-${idCounter}`);
   idCounter += 1;
   taskArray.push(newTask);
   updateUI();
@@ -85,13 +96,10 @@ const saveChanges: Function = (e: Event) => {
   const eventTarget = e.target as HTMLButtonElement;
   const taskId: string = eventTarget.getAttribute('edit-task-id')!;
   
-  const editTask = new Task(editNameInput.value, editDateInput.value, editImportantInput.checked, taskId);
+  const editTask = new Task(editNameInput.value, editDateInput.value, editImportantInput.checked, false, taskId);
   taskArray.forEach((task, index) => taskArray[index] = task.id === taskId ? editTask : task);
   updateUI();
 
-  let editTaskButtons: Element[] = [...document.querySelectorAll('.edit-task')];
-  editTaskButtons.map(button => button.addEventListener('click', e => editModalShow(e)));
-  
   editNameInput.value = '';
   editDateInput.value = '';
   editImportantInput.checked = false;
