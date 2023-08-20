@@ -27,7 +27,7 @@ export class TaskTemplate {
     dropdown.className = 'dropdown';
     dropdownMenuUl.className = 'dropdown-menu shadow';
     editButton.className = 'dropdown-item edit-task';
-    deleteButton.className = 'dropdown-item';
+    deleteButton.className = 'dropdown-item delete-task';
     importantButton.className = 'dropdown-item';
 
     taskTitle.innerText = task.name;
@@ -42,7 +42,8 @@ export class TaskTemplate {
     
     editButton.setAttribute('data-bs-toggle', 'modal');
     editButton.setAttribute('data-bs-target', '#taskEditModal');
-
+    deleteButton.setAttribute('data-bs-toggle', 'modal');
+    deleteButton.setAttribute('data-bs-target', '#taskDeleteModal');
     
     editButtonLi.appendChild(editButton);
     deleteButtonLi.appendChild(deleteButton);

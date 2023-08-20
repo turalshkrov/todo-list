@@ -12,12 +12,22 @@ const taskDateInput = document.getElementById('task-date') as HTMLInputElement;
 const editDateInput = document.getElementById('edit-date') as HTMLInputElement;
 const taskFormSubmitButton = document.getElementById('task-form-submit') as HTMLButtonElement;
 const editFormSubmitButton = document.getElementById('edit-form-submit') as HTMLButtonElement;
-
-let editTaskButtons: Element[] = [...document.querySelectorAll('.edit-task')];
+const deleteSubmitButton = document.getElementById('delete-task-submit') as HTMLButtonElement;
 
 let idCounter = 0;
 let taskArray: Task[] = [];
 const taskTemplate = new TaskTemplate(taskContainer);
+
+const updateUI: Function = () => {
+  taskContainer.innerHTML = '';
+  taskArray.map(task => taskTemplate.render(task));
+
+  let editTaskButtons: Element[] = [...document.querySelectorAll('.edit-task')];
+  editTaskButtons.map(button => button.addEventListener('click', e => editModalShow(e)));
+
+  let deleteTaskButtons: Element[] = [...document.querySelectorAll('.delete-task')];
+  deleteTaskButtons.map(button => button.addEventListener('click', e => deleteModalShow(e)));
+}
 
 const submitChecker: Function = () => {
   taskNameInput.value !== "" && taskDateInput.value !== "" 
@@ -44,21 +54,30 @@ const editModalShow: Function = (e: Event) => {
   editForm.setAttribute('edit-task-id', taskId);
 }
 
+const deleteModalShow: Function = (e: Event) => {
+  const eventTarget = e.target as HTMLButtonElement;
+  const taskId = eventTarget.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.id!;
+  deleteSubmitButton.setAttribute('delete-task-id', taskId);
+}
+
+const deleteTask: Function = (e: Event) => {
+  const eventTarget = e.target as HTMLButtonElement;
+  const taskId: string = eventTarget.getAttribute('delete-task-id')!;
+  taskArray = taskArray.filter(task => task.id !== taskId);
+  updateUI();
+}
+
 const addTask: Function = (e: Event) => {
   e.preventDefault();
   const newTask = new Task(taskNameInput.value, taskDateInput.value, taskImportantInput.checked, `t-${idCounter}`);
   idCounter += 1;
   taskArray.push(newTask);
-  taskContainer.innerHTML = '';
-  taskArray.map(task => taskTemplate.render(task));
-
+  updateUI();
+  
   taskNameInput.value = "";
   taskDateInput.value = "";
   taskImportantInput.checked = false;
   submitChecker();
-
-  let editTaskButtons: Element[] = [...document.querySelectorAll('.edit-task')];
-  editTaskButtons.map(button => button.addEventListener('click', e => editModalShow(e)));
 }
 
 const saveChanges: Function = (e: Event) => {
@@ -68,8 +87,7 @@ const saveChanges: Function = (e: Event) => {
   
   const editTask = new Task(editNameInput.value, editDateInput.value, editImportantInput.checked, taskId);
   taskArray.forEach((task, index) => taskArray[index] = task.id === taskId ? editTask : task);
-  taskContainer.innerHTML = '';
-  taskArray.map(task => taskTemplate.render(task));
+  updateUI();
 
   let editTaskButtons: Element[] = [...document.querySelectorAll('.edit-task')];
   editTaskButtons.map(button => button.addEventListener('click', e => editModalShow(e)));
@@ -84,8 +102,7 @@ const addEventListeners: Function = () => {
   editForm.addEventListener('change', () =>  editSubmitChecker());
   taskForm.addEventListener('submit', e => addTask(e));
   editForm.addEventListener('submit', e => saveChanges(e));
-  editTaskButtons.map(button => button.addEventListener('click', e => editModalShow(e)));
+  deleteSubmitButton.addEventListener('click', e => deleteTask(e));
 }
 
 addEventListeners();
-
