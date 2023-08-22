@@ -15,10 +15,27 @@ const editFormSubmitButton = document.getElementById('edit-form-submit') as HTML
 const deleteSubmitButton = document.getElementById('delete-task-submit') as HTMLButtonElement;
 const sortInput = document.getElementById('sort') as HTMLInputElement;
 const sortOrderButton = document.getElementById('sort-icon') as HTMLElement;
+const allTasksLabel = document.getElementById('all-tasks-count') as HTMLElement;
+const todayTasksLabel = document.getElementById('today-tasks-count') as HTMLElement;
+const upcomingTasksLabel = document.getElementById('upcoming-tasks-count') as HTMLElement;
+const importantTasksLabel = document.getElementById('importanat-tasks-count') as HTMLElement;
 
 let idCounter = 0;
 let taskArray: Task[] = [];
 const taskTemplate = new TaskTemplate(taskContainer);
+
+const labelUpdate: Function = () => {
+  const q = new Date();
+  const m = q.getMonth();
+  const d = q.getDate();
+  const y = q.getFullYear();
+  const today = new Date(y,m,d).toDateString();
+  
+  let todayTasks: Task[] = taskArray.filter(task =>new Date(task.date).toDateString() === today);
+
+  allTasksLabel.innerText = String(taskArray.length);
+  todayTasksLabel.innerText = String(todayTasks.length);
+}
 
 const updateUI: Function = () => {
   taskContainer.innerHTML = '';
@@ -35,6 +52,7 @@ const updateUI: Function = () => {
 
   let makeImportantButtons: Element[] = [...document.querySelectorAll('.make-important')];
   makeImportantButtons.map(button => button.addEventListener('click', e => makeImportant(e)));
+  labelUpdate();
 }
 
 const submitChecker: Function = () => {
