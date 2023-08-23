@@ -17,23 +17,39 @@ const sortOrderButton = document.getElementById('sort-icon');
 const allTasksLabel = document.getElementById('all-tasks-count');
 const todayTasksLabel = document.getElementById('today-tasks-count');
 const upcomingTasksLabel = document.getElementById('upcoming-tasks-count');
-const importantTasksLabel = document.getElementById('importanat-tasks-count');
+const importantTasksLabel = document.getElementById('important-tasks-count');
 let idCounter = 0;
 let taskArray = [];
+let todayTasks = [];
+let upcomingTasks = [];
+let importantTasks = [];
 const taskTemplate = new TaskTemplate(taskContainer);
-const labelUpdate = () => {
+const countLabelsUpdate = () => {
     const q = new Date();
     const m = q.getMonth();
     const d = q.getDate();
     const y = q.getFullYear();
-    const today = new Date(y, m, d).toDateString();
-    let todayTasks = taskArray.filter(task => new Date(task.date).toDateString() === today);
-    allTasksLabel.innerText = String(taskArray.length);
-    todayTasksLabel.innerText = String(todayTasks.length);
+    const todayDate = new Date(y, m, d);
+    const todayString = (todayDate.getMonth() + 1) + '/' + todayDate.getDate() + '/' + todayDate.getFullYear();
+    todayTasks = taskArray.filter(task => {
+        const date = new Date(task.date);
+        const newdate = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+        return newdate === todayString;
+    });
+    upcomingTasks = taskArray.filter(task => {
+        const date = new Date(task.date);
+        const newdate = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+        return newdate > todayString;
+    });
+    importantTasks = taskArray.filter(task => task.isImportant);
+    allTasksLabel.innerText = taskArray.length > 0 ? String(taskArray.length) : '';
+    todayTasksLabel.innerText = todayTasks.length > 0 ? String(todayTasks.length) : '';
+    upcomingTasksLabel.innerText = upcomingTasks.length > 0 ? String(upcomingTasks.length) : '';
+    importantTasksLabel.innerText = importantTasks.length > 0 ? String(importantTasks.length) : '';
 };
-const updateUI = () => {
+const updateUI = (array) => {
     taskContainer.innerHTML = '';
-    taskArray.map(task => taskTemplate.render(task));
+    array.map(task => taskTemplate.render(task));
     let editTaskButtons = [...document.querySelectorAll('.edit-task')];
     editTaskButtons.map(button => button.addEventListener('click', e => editModalShow(e)));
     let deleteTaskButtons = [...document.querySelectorAll('.delete-task')];
@@ -42,7 +58,7 @@ const updateUI = () => {
     finishedTaskButtons.map(button => button.addEventListener('click', e => taskFinished(e)));
     let makeImportantButtons = [...document.querySelectorAll('.make-important')];
     makeImportantButtons.map(button => button.addEventListener('click', e => makeImportant(e)));
-    labelUpdate();
+    countLabelsUpdate();
 };
 const submitChecker = () => {
     taskNameInput.value !== "" && taskDateInput.value !== ""
@@ -59,7 +75,7 @@ const addTask = (e) => {
     const newTask = new Task(taskNameInput.value, taskDateInput.value, taskImportantInput.checked, false, `t-${idCounter}`);
     idCounter += 1;
     taskArray.push(newTask);
-    updateUI();
+    updateUI(taskArray);
     taskNameInput.value = "";
     taskDateInput.value = "";
     taskImportantInput.checked = false;
@@ -71,7 +87,7 @@ const saveChanges = (e) => {
     const taskId = eventTarget.getAttribute('edit-task-id');
     const editTask = new Task(editNameInput.value, editDateInput.value, editImportantInput.checked, false, taskId);
     taskArray.forEach((task, index) => taskArray[index] = task.id === taskId ? editTask : task);
-    updateUI();
+    updateUI(taskArray);
     editNameInput.value = '';
     editDateInput.value = '';
     editImportantInput.checked = false;
@@ -98,21 +114,21 @@ const deleteTask = (e) => {
     const eventTarget = e.target;
     const taskId = eventTarget.getAttribute('delete-task-id');
     taskArray = taskArray.filter(task => task.id !== taskId);
-    updateUI();
+    updateUI(taskArray);
 };
 const taskFinished = (e) => {
     var _a, _b;
     const eventTarget = e.target;
     const taskId = (_b = (_a = eventTarget.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement) === null || _b === void 0 ? void 0 : _b.id;
     taskArray.forEach((task) => task.finished = task.id === taskId ? !task.finished : task.finished);
-    updateUI();
+    updateUI(taskArray);
 };
 const makeImportant = (e) => {
     var _a, _b, _c, _d, _e;
     const eventTarget = e.target;
     const taskId = (_e = (_d = (_c = (_b = (_a = eventTarget.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement) === null || _b === void 0 ? void 0 : _b.parentElement) === null || _c === void 0 ? void 0 : _c.parentElement) === null || _d === void 0 ? void 0 : _d.parentElement) === null || _e === void 0 ? void 0 : _e.id;
     taskArray.forEach((task) => task.isImportant = task.id === taskId ? !task.isImportant : task.isImportant);
-    updateUI();
+    updateUI(taskArray);
 };
 const sortTaskArray = () => {
     switch (sortInput.value) {
@@ -126,13 +142,13 @@ const sortTaskArray = () => {
             taskArray.sort((a, b) => a.date > b.date ? 1 : -1);
             break;
     }
-    updateUI();
+    updateUI(taskArray);
 };
 const sortOrder = (e) => {
     const eventTarget = e.target;
     eventTarget.className = eventTarget.className === 'bi bi-sort-up fs-5 ms-1' ? 'bi bi-sort-down fs-5 ms-1' : 'bi bi-sort-up fs-5 ms-1';
     taskArray.reverse();
-    updateUI();
+    updateUI(taskArray);
 };
 const addEventListeners = () => {
     taskForm.addEventListener('change', () => submitChecker());
