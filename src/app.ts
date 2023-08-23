@@ -27,14 +27,14 @@ let upcomingTasks: Task[] = [];
 let importantTasks: Task[] = [];
 const taskTemplate = new TaskTemplate(taskContainer);
 
-const countLabelsUpdate: Function = () => {
+const arraysUpdate: Function = () => {
   const q = new Date();
   const m = q.getMonth();
   const d = q.getDate();
   const y = q.getFullYear();
   const todayDate = new Date(y,m,d);
   const todayString = (todayDate.getMonth() + 1) + '/' + todayDate.getDate() + '/' + todayDate.getFullYear();
-  
+
   todayTasks = taskArray.filter(task => {
     const date = new Date(task.date);
     const newdate = (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
@@ -48,7 +48,9 @@ const countLabelsUpdate: Function = () => {
   });
 
   importantTasks = taskArray.filter(task => task.isImportant);
+}
 
+const countLabelsUpdate: Function = () => {
   allTasksLabel.innerText = taskArray.length > 0 ? String(taskArray.length) : '';
   todayTasksLabel.innerText = todayTasks.length > 0 ? String(todayTasks.length) : '';
   upcomingTasksLabel.innerText = upcomingTasks.length > 0 ? String(upcomingTasks.length) : '';
@@ -70,6 +72,7 @@ const updateUI: Function = (array: Task[]) => {
 
   let makeImportantButtons: Element[] = [...document.querySelectorAll('.make-important')];
   makeImportantButtons.map(button => button.addEventListener('click', e => makeImportant(e)));
+  arraysUpdate();
   countLabelsUpdate();
 }
 

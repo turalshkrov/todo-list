@@ -24,7 +24,7 @@ let todayTasks = [];
 let upcomingTasks = [];
 let importantTasks = [];
 const taskTemplate = new TaskTemplate(taskContainer);
-const countLabelsUpdate = () => {
+const arraysUpdate = () => {
     const q = new Date();
     const m = q.getMonth();
     const d = q.getDate();
@@ -42,6 +42,8 @@ const countLabelsUpdate = () => {
         return newdate > todayString;
     });
     importantTasks = taskArray.filter(task => task.isImportant);
+};
+const countLabelsUpdate = () => {
     allTasksLabel.innerText = taskArray.length > 0 ? String(taskArray.length) : '';
     todayTasksLabel.innerText = todayTasks.length > 0 ? String(todayTasks.length) : '';
     upcomingTasksLabel.innerText = upcomingTasks.length > 0 ? String(upcomingTasks.length) : '';
@@ -58,6 +60,7 @@ const updateUI = (array) => {
     finishedTaskButtons.map(button => button.addEventListener('click', e => taskFinished(e)));
     let makeImportantButtons = [...document.querySelectorAll('.make-important')];
     makeImportantButtons.map(button => button.addEventListener('click', e => makeImportant(e)));
+    arraysUpdate();
     countLabelsUpdate();
 };
 const submitChecker = () => {
