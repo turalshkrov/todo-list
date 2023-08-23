@@ -1,5 +1,6 @@
 import { Task } from "./moduls/task.js";
 import { TaskTemplate } from "./moduls/taskTemplate.js";
+import { DateFormat } from "./moduls/dateFormat.js";
 
 const taskContainer = document.getElementById('task-container') as HTMLElement;
 const taskForm = document.getElementById('task-form') as HTMLFormElement;
@@ -19,13 +20,16 @@ const allTasksLabel = document.getElementById('all-tasks-count') as HTMLElement;
 const todayTasksLabel = document.getElementById('today-tasks-count') as HTMLElement;
 const upcomingTasksLabel = document.getElementById('upcoming-tasks-count') as HTMLElement;
 const importantTasksLabel = document.getElementById('important-tasks-count') as HTMLElement;
+const navbarUl = document.getElementById('navbar-ul') as HTMLElement;
+
+const taskTemplate = new TaskTemplate(taskContainer);
 
 let idCounter = 0;
 let taskArray: Task[] = [];
 let todayTasks: Task[] = [];
 let upcomingTasks: Task[] = [];
 let importantTasks: Task[] = [];
-const taskTemplate = new TaskTemplate(taskContainer);
+let currentTaskArray: Task[] = [];
 
 const arraysUpdate: Function = () => {
   const q = new Date();
@@ -33,18 +37,18 @@ const arraysUpdate: Function = () => {
   const d = q.getDate();
   const y = q.getFullYear();
   const todayDate = new Date(y,m,d);
-  const todayString = (todayDate.getMonth() + 1) + '/' + todayDate.getDate() + '/' + todayDate.getFullYear();
+  const todayString = DateFormat.format(todayDate);
 
   todayTasks = taskArray.filter(task => {
     const date = new Date(task.date);
-    const newdate = (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
+    const newdate = DateFormat.format(date);
     return newdate === todayString;
   });
 
   upcomingTasks = taskArray.filter(task => {
     const date = new Date(task.date);
-    const newdate = (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
-    return newdate > todayString;
+    const taskDate = DateFormat.format(date);
+    return taskDate > todayString;
   });
 
   importantTasks = taskArray.filter(task => task.isImportant);
@@ -74,6 +78,28 @@ const updateUI: Function = (array: Task[]) => {
   makeImportantButtons.map(button => button.addEventListener('click', e => makeImportant(e)));
   arraysUpdate();
   countLabelsUpdate();
+}
+
+const filterTasks: Function = (e: Event) => {
+  let eventTarget = e.target as HTMLElement;
+  while (eventTarget.className !== 'nav-item d-flex justify-content-between my-2') {
+    eventTarget = eventTarget.parentElement!;
+  }
+  switch (eventTarget.id) {
+    case 'all-tasks':
+      currentTaskArray = taskArray;
+      break;
+    case 'today-tasks':
+      currentTaskArray = todayTasks;
+      break;
+    case 'upcoming-tasks':
+      currentTaskArray = upcomingTasks;
+      break;
+    case 'important-tasks':
+      currentTaskArray = importantTasks;
+      break;
+  }
+  updateUI(currentTaskArray);
 }
 
 const submitChecker: Function = () => {
@@ -138,21 +164,21 @@ const deleteTask: Function = (e: Event) => {
   const eventTarget = e.target as HTMLButtonElement;
   const taskId: string = eventTarget.getAttribute('delete-task-id')!;
   taskArray = taskArray.filter(task => task.id !== taskId);
-  updateUI(taskArray);
+  updateUI(currentTaskArray);
 }
 
 const taskFinished: Function = (e: Event) => {
   const eventTarget = e.target as HTMLButtonElement;
   const taskId = eventTarget.parentElement?.parentElement?.id!;
   taskArray.forEach((task)=> task.finished = task.id === taskId ? !task.finished : task.finished);
-  updateUI(taskArray);
+  updateUI(currentTaskArray);
 }
 
 const makeImportant: Function = (e: Event) => {
   const eventTarget = e.target as HTMLButtonElement;
   const taskId = eventTarget.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.id!;
   taskArray.forEach((task)=> task.isImportant = task.id === taskId ? !task.isImportant : task.isImportant);
-  updateUI(taskArray);
+  updateUI(currentTaskArray);
 }
 
 const sortTaskArray: Function = () => {
@@ -167,14 +193,14 @@ const sortTaskArray: Function = () => {
       taskArray.sort((a,b) => a.date > b.date ? 1 : -1);
       break;
   }
-  updateUI(taskArray);
+  updateUI(currentTaskArray);
 }
 
 const sortOrder: Function = (e: Event) => {
   const eventTarget: Element = e.target as HTMLElement;
   eventTarget.className = eventTarget.className === 'bi bi-sort-up fs-5 ms-1' ? 'bi bi-sort-down fs-5 ms-1' : 'bi bi-sort-up fs-5 ms-1';
   taskArray.reverse();
-  updateUI(taskArray);
+  updateUI(currentTaskArray);
 }
 
 const addEventListeners: Function = () => {
@@ -185,6 +211,7 @@ const addEventListeners: Function = () => {
   deleteSubmitButton.addEventListener('click', e => deleteTask(e));
   sortInput.addEventListener('change', () => sortTaskArray());
   sortOrderButton.addEventListener('click', e => sortOrder(e));
+  navbarUl.addEventListener('click', e => filterTasks(e));
 }
 
 addEventListeners();
