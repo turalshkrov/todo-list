@@ -21,12 +21,13 @@ const upcomingTasksLabel = document.getElementById('upcoming-tasks-count');
 const importantTasksLabel = document.getElementById('important-tasks-count');
 const navbarUl = document.getElementById('navbar-ul');
 const taskTemplate = new TaskTemplate(taskContainer);
-let idCounter = 0;
-let taskArray = [];
+// @ts-ignore
+let taskArray = localStorage.getItem('taskArray') === null ? [] : JSON.parse(localStorage.getItem('taskArray'));
+let idCounter = localStorage.getItem('idCounter') === null ? 0 : Number(localStorage.getItem('idCounter'));
 let todayTasks = [];
 let upcomingTasks = [];
 let importantTasks = [];
-let currentTaskArray = [];
+let currentTaskArray = taskArray;
 const arraysUpdate = () => {
     const q = new Date();
     const m = q.getMonth();
@@ -107,6 +108,8 @@ const addTask = (e) => {
     taskDateInput.value = "";
     taskImportantInput.checked = false;
     submitChecker();
+    localStorage.setItem('idCounter', String(idCounter));
+    localStorage.setItem('taskArray', JSON.stringify(taskArray));
 };
 const saveChanges = (e) => {
     e.preventDefault();
@@ -118,6 +121,7 @@ const saveChanges = (e) => {
     editNameInput.value = '';
     editDateInput.value = '';
     editImportantInput.checked = false;
+    localStorage.setItem('taskArray', JSON.stringify(taskArray));
 };
 const editModalShow = (e) => {
     var _a, _b, _c, _d, _e;
@@ -142,6 +146,7 @@ const deleteTask = (e) => {
     const taskId = eventTarget.getAttribute('delete-task-id');
     taskArray = taskArray.filter(task => task.id !== taskId);
     updateUI(currentTaskArray);
+    localStorage.setItem('taskArray', JSON.stringify(taskArray));
 };
 const taskFinished = (e) => {
     var _a, _b;
@@ -149,6 +154,7 @@ const taskFinished = (e) => {
     const taskId = (_b = (_a = eventTarget.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement) === null || _b === void 0 ? void 0 : _b.id;
     taskArray.forEach((task) => task.finished = task.id === taskId ? !task.finished : task.finished);
     updateUI(currentTaskArray);
+    localStorage.setItem('taskArray', JSON.stringify(taskArray));
 };
 const makeImportant = (e) => {
     var _a, _b, _c, _d, _e;
@@ -156,6 +162,7 @@ const makeImportant = (e) => {
     const taskId = (_e = (_d = (_c = (_b = (_a = eventTarget.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement) === null || _b === void 0 ? void 0 : _b.parentElement) === null || _c === void 0 ? void 0 : _c.parentElement) === null || _d === void 0 ? void 0 : _d.parentElement) === null || _e === void 0 ? void 0 : _e.id;
     taskArray.forEach((task) => task.isImportant = task.id === taskId ? !task.isImportant : task.isImportant);
     updateUI(currentTaskArray);
+    localStorage.setItem('taskArray', JSON.stringify(taskArray));
 };
 const sortTaskArray = () => {
     switch (sortInput.value) {
@@ -188,3 +195,4 @@ const addEventListeners = () => {
     navbarUl.addEventListener('click', e => filterTasks(e));
 };
 addEventListeners();
+updateUI(taskArray);

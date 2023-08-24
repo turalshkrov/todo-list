@@ -24,12 +24,13 @@ const navbarUl = document.getElementById('navbar-ul') as HTMLElement;
 
 const taskTemplate = new TaskTemplate(taskContainer);
 
-let idCounter = 0;
-let taskArray: Task[] = [];
+// @ts-ignore
+let taskArray: Task[] = localStorage.getItem('taskArray') === null ? [] : JSON.parse(localStorage.getItem('taskArray'));
+let idCounter: number = localStorage.getItem('idCounter') === null ? 0 : Number(localStorage.getItem('idCounter'));
 let todayTasks: Task[] = [];
 let upcomingTasks: Task[] = [];
 let importantTasks: Task[] = [];
-let currentTaskArray: Task[] = [];
+let currentTaskArray: Task[] = taskArray;
 
 const arraysUpdate: Function = () => {
   const q = new Date();
@@ -44,7 +45,7 @@ const arraysUpdate: Function = () => {
     const newdate = DateFormat.format(date);
     return newdate === todayString;
   });
-
+  
   upcomingTasks = taskArray.filter(task => {
     const date = new Date(task.date);
     const taskDate = DateFormat.format(date);
@@ -76,6 +77,7 @@ const updateUI: Function = (array: Task[]) => {
 
   let makeImportantButtons: Element[] = [...document.querySelectorAll('.make-important')];
   makeImportantButtons.map(button => button.addEventListener('click', e => makeImportant(e)));
+
   arraysUpdate();
   countLabelsUpdate();
 }
@@ -125,6 +127,9 @@ const addTask: Function = (e: Event) => {
   taskDateInput.value = "";
   taskImportantInput.checked = false;
   submitChecker();
+
+  localStorage.setItem('idCounter', String(idCounter));
+  localStorage.setItem('taskArray', JSON.stringify(taskArray));
 }
 
 const saveChanges: Function = (e: Event) => {
@@ -139,6 +144,8 @@ const saveChanges: Function = (e: Event) => {
   editNameInput.value = '';
   editDateInput.value = '';
   editImportantInput.checked = false;
+
+  localStorage.setItem('taskArray', JSON.stringify(taskArray));
 }
 
 const editModalShow: Function = (e: Event) => {
@@ -165,6 +172,8 @@ const deleteTask: Function = (e: Event) => {
   const taskId: string = eventTarget.getAttribute('delete-task-id')!;
   taskArray = taskArray.filter(task => task.id !== taskId);
   updateUI(currentTaskArray);
+
+  localStorage.setItem('taskArray', JSON.stringify(taskArray));
 }
 
 const taskFinished: Function = (e: Event) => {
@@ -172,6 +181,8 @@ const taskFinished: Function = (e: Event) => {
   const taskId = eventTarget.parentElement?.parentElement?.id!;
   taskArray.forEach((task)=> task.finished = task.id === taskId ? !task.finished : task.finished);
   updateUI(currentTaskArray);
+
+  localStorage.setItem('taskArray', JSON.stringify(taskArray));
 }
 
 const makeImportant: Function = (e: Event) => {
@@ -179,6 +190,8 @@ const makeImportant: Function = (e: Event) => {
   const taskId = eventTarget.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.id!;
   taskArray.forEach((task)=> task.isImportant = task.id === taskId ? !task.isImportant : task.isImportant);
   updateUI(currentTaskArray);
+
+  localStorage.setItem('taskArray', JSON.stringify(taskArray));
 }
 
 const sortTaskArray: Function = () => {
@@ -215,3 +228,4 @@ const addEventListeners: Function = () => {
 }
 
 addEventListeners();
+updateUI(taskArray);
