@@ -30,7 +30,7 @@ let idCounter: number = localStorage.getItem('idCounter') === null ? 0 : Number(
 let todayTasks: Task[] = [];
 let upcomingTasks: Task[] = [];
 let importantTasks: Task[] = [];
-let currentTaskArray: Task[] = taskArray;
+let currentLabel: string = 'all';
 
 const arraysUpdate: Function = () => {
   const q = new Date();
@@ -62,9 +62,27 @@ const countLabelsUpdate: Function = () => {
   importantTasksLabel.innerText = importantTasks.length > 0 ? String(importantTasks.length) : '';
 }
 
-const updateUI: Function = (array: Task[]) => {
+const updateUI: Function = () => {
+  let renderArray: Task[] = [];
+  arraysUpdate();
+  countLabelsUpdate();
+  switch (currentLabel) {
+    case 'all':
+      renderArray = taskArray;
+      break;
+    case 'today':
+      renderArray = todayTasks;
+      break;
+    case 'upcoming':
+      renderArray = upcomingTasks;
+      break;
+    case 'important':
+      renderArray = importantTasks;
+      break;
+  }
+
   taskContainer.innerHTML = '';
-  array.map(task => taskTemplate.render(task));
+  renderArray.map(task => taskTemplate.render(task));
 
   let editTaskButtons: Element[] = [...document.querySelectorAll('.edit-task')];
   editTaskButtons.map(button => button.addEventListener('click', e => editModalShow(e)));
@@ -77,9 +95,6 @@ const updateUI: Function = (array: Task[]) => {
 
   let makeImportantButtons: Element[] = [...document.querySelectorAll('.make-important')];
   makeImportantButtons.map(button => button.addEventListener('click', e => makeImportant(e)));
-
-  arraysUpdate();
-  countLabelsUpdate();
 }
 
 const filterTasks: Function = (e: Event) => {
@@ -89,19 +104,19 @@ const filterTasks: Function = (e: Event) => {
   }
   switch (eventTarget.id) {
     case 'all-tasks':
-      currentTaskArray = taskArray;
+      currentLabel = 'all';
       break;
     case 'today-tasks':
-      currentTaskArray = todayTasks;
+      currentLabel = 'today';
       break;
     case 'upcoming-tasks':
-      currentTaskArray = upcomingTasks;
+      currentLabel = 'upcoming';
       break;
     case 'important-tasks':
-      currentTaskArray = importantTasks;
+      currentLabel = 'important';
       break;
   }
-  updateUI(currentTaskArray);
+  updateUI();
 }
 
 const submitChecker: Function = () => {
@@ -139,7 +154,7 @@ const saveChanges: Function = (e: Event) => {
   
   const editTask = new Task(editNameInput.value, editDateInput.value, editImportantInput.checked, false, taskId);
   taskArray.forEach((task, index) => taskArray[index] = task.id === taskId ? editTask : task);
-  updateUI(taskArray);
+  updateUI();
 
   editNameInput.value = '';
   editDateInput.value = '';
@@ -149,11 +164,14 @@ const saveChanges: Function = (e: Event) => {
 }
 
 const editModalShow: Function = (e: Event) => {
-  const eventTarget = e.target as HTMLButtonElement;
+  let eventTarget = e.target as HTMLElement;
+  while (!eventTarget.className.includes('dropdown-item')) {
+    eventTarget = eventTarget.parentElement!;
+  }
   const taskId = eventTarget.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.id!;
-  const taskName = taskArray.filter(task => task.id === taskId)[0].name;
-  const taskDate = taskArray.filter(task => task.id === taskId)[0].date;
-  const taskImportant = taskArray.filter(task => task.id === taskId)[0].isImportant;
+  const taskName = taskArray.filter(task => task.id == taskId)[0].name;
+  const taskDate = taskArray.filter(task => task.id == taskId)[0].date;
+  const taskImportant = taskArray.filter(task => task.id == taskId)[0].isImportant;
 
   editNameInput.value = taskName;
   editDateInput.value = taskDate;
@@ -162,7 +180,10 @@ const editModalShow: Function = (e: Event) => {
 }
 
 const deleteModalShow: Function = (e: Event) => {
-  const eventTarget = e.target as HTMLButtonElement;
+  let eventTarget = e.target as HTMLElement;
+  while (!eventTarget.className.includes('dropdown-item')) {
+    eventTarget = eventTarget.parentElement!;
+  }
   const taskId = eventTarget.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.id!;
   deleteSubmitButton.setAttribute('delete-task-id', taskId);
 }
@@ -171,7 +192,7 @@ const deleteTask: Function = (e: Event) => {
   const eventTarget = e.target as HTMLButtonElement;
   const taskId: string = eventTarget.getAttribute('delete-task-id')!;
   taskArray = taskArray.filter(task => task.id !== taskId);
-  updateUI(currentTaskArray);
+  updateUI();
 
   localStorage.setItem('taskArray', JSON.stringify(taskArray));
 }
@@ -180,16 +201,19 @@ const taskFinished: Function = (e: Event) => {
   const eventTarget = e.target as HTMLButtonElement;
   const taskId = eventTarget.parentElement?.parentElement?.id!;
   taskArray.forEach((task)=> task.finished = task.id === taskId ? !task.finished : task.finished);
-  updateUI(currentTaskArray);
+  updateUI();
 
   localStorage.setItem('taskArray', JSON.stringify(taskArray));
 }
 
 const makeImportant: Function = (e: Event) => {
-  const eventTarget = e.target as HTMLButtonElement;
+  let eventTarget = e.target as HTMLElement;
+  while (!eventTarget.className.includes('dropdown-item')) {
+    eventTarget = eventTarget.parentElement!;
+  }
   const taskId = eventTarget.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.id!;
   taskArray.forEach((task)=> task.isImportant = task.id === taskId ? !task.isImportant : task.isImportant);
-  updateUI(currentTaskArray);
+  updateUI();
 
   localStorage.setItem('taskArray', JSON.stringify(taskArray));
 }
@@ -206,14 +230,14 @@ const sortTaskArray: Function = () => {
       taskArray.sort((a,b) => a.date > b.date ? 1 : -1);
       break;
   }
-  updateUI(currentTaskArray);
+  updateUI();
 }
 
 const sortOrder: Function = (e: Event) => {
   const eventTarget: Element = e.target as HTMLElement;
   eventTarget.className = eventTarget.className === 'bi bi-sort-up fs-5 ms-1' ? 'bi bi-sort-down fs-5 ms-1' : 'bi bi-sort-up fs-5 ms-1';
   taskArray.reverse();
-  updateUI(currentTaskArray);
+  updateUI();
 }
 
 const addEventListeners: Function = () => {
@@ -228,4 +252,4 @@ const addEventListeners: Function = () => {
 }
 
 addEventListeners();
-updateUI(taskArray);
+updateUI();
